@@ -1,0 +1,26 @@
+name: Deploy Front End Website Stage To Heroku
+
+on:
+  push:
+    branches:
+      # Run jobs when updating or creating any branch except for main on GitHub.
+      - "**"
+      - "!main"
+    #paths:
+    # Re-run jobs when content changes in specified file or directory.
+    # - frontend-web/** # Use if there are frontend and backend in separate folders.
+    # - .github/workflows/stage-frontend-web.yml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_STAGE_FRONTEND}} #Must be unique in Heroku
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          usedocker: true
+          # Specify a path to the directory to deploy. Use if there are frontend and backend in separate folders.
+          # appdir: ${{secrets.FRONTEND_WEB_DIRECTORY}}
